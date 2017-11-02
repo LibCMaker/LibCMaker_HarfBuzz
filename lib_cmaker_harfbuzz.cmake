@@ -23,21 +23,24 @@
 
 if(NOT LIBCMAKER_SRC_DIR)
   message(FATAL_ERROR
-    "Please set LIBCMAKER_SRC_DIR with path to LibCMaker modules root")
+    "Please set LIBCMAKER_SRC_DIR with path to LibCMaker root")
 endif()
 # TODO: prevent multiply includes for CMAKE_MODULE_PATH
 list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
 
-# To find library CMaker source dir.
-set(lcm_LibCMaker_LIB_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
-# TODO: prevent multiply includes for CMAKE_MODULE_PATH
-list(APPEND CMAKE_MODULE_PATH "${lcm_LibCMaker_LIB_SRC_DIR}/cmake/modules")
 
 include(CMakeParseArguments) # cmake_parse_arguments
 
 include(cmr_lib_cmaker)
 include(cmr_print_debug_message)
 include(cmr_print_var_value)
+
+
+# To find library CMaker source dir.
+set(lcm_LibCMaker_HarfBuzz_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
+# TODO: prevent multiply includes for CMAKE_MODULE_PATH
+list(APPEND CMAKE_MODULE_PATH "${lcm_LibCMaker_HarfBuzz_SRC_DIR}/cmake/modules")
+
 
 function(lib_cmaker_harfbuzz)
   cmake_minimum_required(VERSION 3.2)
@@ -89,6 +92,12 @@ function(lib_cmaker_harfbuzz)
   #-----------------------------------------------------------------------
 
   set(lcm_CMAKE_ARGS)
+
+  if(DEFINED ENV{FREETYPE_DIR})
+    list(APPEND lcm_CMAKE_ARGS
+      -DFREETYPE_DIR=$ENV{FREETYPE_DIR}
+    )
+  endif()
 
   if(DEFINED HB_HAVE_FREETYPE)
     list(APPEND lcm_CMAKE_ARGS
@@ -153,7 +162,7 @@ function(lib_cmaker_harfbuzz)
 
   cmr_lib_cmaker(
     VERSION ${arg_VERSION}
-    PROJECT_DIR ${lcm_LibCMaker_LIB_SRC_DIR}
+    PROJECT_DIR ${lcm_LibCMaker_HarfBuzz_SRC_DIR}
     DOWNLOAD_DIR ${arg_DOWNLOAD_DIR}
     UNPACKED_SRC_DIR ${arg_UNPACKED_SRC_DIR}
     BUILD_DIR ${arg_BUILD_DIR}

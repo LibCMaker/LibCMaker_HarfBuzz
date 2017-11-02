@@ -28,8 +28,12 @@ function(cmr_harfbuzz_get_download_params
     out_url out_sha out_src_dir_name out_tar_file_name)
 
   set(lib_base_url "https://www.freedesktop.org/software/harfbuzz/release")
-  
+
   # TODO: get url and sha256 for all HarfBuzz version
+  if(version VERSION_EQUAL "1.4.8")
+    set(lib_sha
+      "ccec4930ff0bb2d0c40aee203075447954b64a8c2695202413cc5e428c907131")
+  endif()
   if(version VERSION_EQUAL "1.6.3")
     set(lib_sha
       "e31eb367beb61a9399d2c78b51c225ab2b1cbd46f364f2d80d97bb422b44101a")

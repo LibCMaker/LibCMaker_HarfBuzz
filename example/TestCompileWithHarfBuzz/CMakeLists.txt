@@ -57,6 +57,8 @@ set(DOWNLOAD_DIR "${PROJECT_BINARY_DIR}")
 set(UNPACKED_SRC_DIR "${PROJECT_BINARY_DIR}")
 set(BUILD_DIR "${PROJECT_BINARY_DIR}/build")
 
+set(ENV{HARFBUZZ_DIR} "${CMAKE_INSTALL_PREFIX}")
+
 # Library specific vars.
 
 # Enable freetype interop helpers
@@ -110,10 +112,9 @@ lib_cmaker_harfbuzz(
 # Configure for find_package.
 #-----------------------------------------------------------------------
 
-# TODO: with FindHarfBuzz.cmake can find only with defined CMAKE_FIND_ROOT_PATH
-#if(ANDROID)
-  set(CMAKE_FIND_ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
-#endif()
+if(ANDROID)
+  list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
+endif()
 
 
 #-----------------------------------------------------------------------
@@ -129,7 +130,7 @@ find_package(HarfBuzz REQUIRED)
 #-----------------------------------------------------------------------
 
 # Build test executables
-add_executable (${PROJECT_NAME}
+add_executable(${PROJECT_NAME}
   ${UNPACKED_SRC_DIR}/harfbuzz-${lib_VERSION}/test/fuzzing/main.cc
   ${UNPACKED_SRC_DIR}/harfbuzz-${lib_VERSION}/test/fuzzing/hb-fuzzer.cc
 )

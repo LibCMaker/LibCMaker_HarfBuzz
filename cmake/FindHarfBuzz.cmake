@@ -1,3 +1,26 @@
+# ****************************************************************************
+#  Project:  LibCMaker_HarfBuzz
+#  Purpose:  A CMake build script for HarfBuzz Library
+#  Author:   NikitaFeodonit, nfeodonit@yandex.com
+# ****************************************************************************
+#    Copyright (c) 2017 NikitaFeodonit
+#
+#    This file is part of the LibCMaker_HarfBuzz project.
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published
+#    by the Free Software Foundation, either version 3 of the License,
+#    or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#    See the GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program. If not, see <http://www.gnu.org/licenses/>.
+# ****************************************************************************
+
 #.rst:
 # Find HarfBuzz
 # -------------
@@ -14,8 +37,6 @@
 #  HARFBUZZ_INCLUDE_DIR     - Include dir
 #
 
-#
-#   This file is part of Magnum.
 #
 #   Copyright © 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017
 #             Vladimír Vondruš <mosra@centrum.cz>
@@ -40,12 +61,20 @@
 #
 
 # Library
-find_library(HARFBUZZ_LIBRARY NAMES harfbuzz)
+find_library(HARFBUZZ_LIBRARY
+    NAMES harfbuzz
+    PATH_SUFFIXES lib
+    HINTS ENV HARFBUZZ_DIR)
 
 # Include dir
 find_path(HARFBUZZ_INCLUDE_DIR
     NAMES hb.h
-    PATH_SUFFIXES harfbuzz)
+    PATH_SUFFIXES
+      include/harfbuzz
+      include
+      harfbuzz
+    HINTS ENV HARFBUZZ_DIR)
+
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(HarfBuzz DEFAULT_MSG
@@ -64,3 +93,4 @@ if(NOT TARGET HarfBuzz::HarfBuzz)
 endif()
 
 set(HARFBUZZ_LIBRARIES ${HARFBUZZ_LIBRARY})
+set(HARFBUZZ_INCLUDE_DIRS ${HARFBUZZ_INCLUDE_DIR})
