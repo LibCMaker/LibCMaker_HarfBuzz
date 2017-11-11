@@ -60,12 +60,6 @@
 #   DEALINGS IN THE SOFTWARE.
 #
 
-# Library
-find_library(HARFBUZZ_LIBRARY
-    NAMES harfbuzz
-    PATH_SUFFIXES lib
-    HINTS ENV HARFBUZZ_DIR)
-
 # Include dir
 find_path(HARFBUZZ_INCLUDE_DIR
     NAMES hb.h
@@ -75,6 +69,11 @@ find_path(HARFBUZZ_INCLUDE_DIR
       harfbuzz
     HINTS ENV HARFBUZZ_DIR)
 
+# Library
+find_library(HARFBUZZ_LIBRARY
+    NAMES harfbuzz
+    PATH_SUFFIXES lib
+    HINTS ENV HARFBUZZ_DIR)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(HarfBuzz DEFAULT_MSG
