@@ -34,5 +34,10 @@ list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
 
+if(HB_HAVE_FREETYPE)
+  # To use our FindFreetype.cmake in HarfBuzz's CMakeLists.txt
+  list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+endif()
+
 include(cmr_harfbuzz_cmaker)
 cmr_harfbuzz_cmaker()
