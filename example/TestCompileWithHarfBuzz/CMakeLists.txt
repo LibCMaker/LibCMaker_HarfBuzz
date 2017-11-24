@@ -88,6 +88,14 @@ set(ENV{HARFBUZZ_DIR} "${CMAKE_INSTALL_PREFIX}")
 # Enable building introspection (.gir/.typelib) files
 #set(HB_HAVE_INTROSPECTION OFF)
 
+if(HB_HAVE_FREETYPE)
+  # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType
+  set(LIBCMAKER_FREETYPE_SRC_DIR
+    "${PROJECT_SOURCE_DIR}/cmake/LibCMaker_FreeType")
+  # To use our FindFreetype.cmake
+  list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/")
+endif()
+
 
 #-----------------------------------------------------------------------
 # Build and install the HarfBuzz.

@@ -36,6 +36,11 @@ include(cmr_print_debug_message)
 include(cmr_print_var_value)
 
 
+if(HB_HAVE_FREETYPE AND NOT LIBCMAKER_FREETYPE_SRC_DIR)
+  cmr_print_fatal_error(
+    "Please set LIBCMAKER_FREETYPE_SRC_DIR with path to LibCMaker_FreeType root.")
+endif()
+
 # To find library CMaker source dir.
 set(lcm_LibCMaker_HarfBuzz_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 # TODO: prevent multiply includes for CMAKE_MODULE_PATH
@@ -67,6 +72,9 @@ function(lib_cmaker_harfbuzz)
   # -> lib_* ...
 
   cmr_print_var_value(LIBCMAKER_SRC_DIR)
+  if(HB_HAVE_FREETYPE)
+    cmr_print_var_value(LIBCMAKER_FREETYPE_SRC_DIR)
+  endif()
 
   cmr_print_var_value(arg_VERSION)
   cmr_print_var_value(arg_BUILD_DIR)
@@ -92,6 +100,12 @@ function(lib_cmaker_harfbuzz)
   #-----------------------------------------------------------------------
 
   set(lcm_CMAKE_ARGS)
+
+  if(DEFINED LIBCMAKER_FREETYPE_SRC_DIR)
+    list(APPEND lcm_CMAKE_ARGS
+      -DLIBCMAKER_FREETYPE_SRC_DIR=${LIBCMAKER_FREETYPE_SRC_DIR}
+    )
+  endif()
 
   if(DEFINED ENV{FREETYPE_DIR})
     list(APPEND lcm_CMAKE_ARGS
