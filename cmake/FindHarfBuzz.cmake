@@ -62,33 +62,45 @@
 
 # Include dir
 find_path(HARFBUZZ_INCLUDE_DIR
-    NAMES hb.h
-    PATH_SUFFIXES
-      include/harfbuzz
-      include
-      harfbuzz
-    HINTS ENV HARFBUZZ_DIR)
+  NAMES
+    hb.h
+  PATH_SUFFIXES
+    include/harfbuzz
+    include
+    harfbuzz
+  HINTS
+    ENV HARFBUZZ_DIR
+  NO_DEFAULT_PATH
+)
 
 # Library
 find_library(HARFBUZZ_LIBRARY
-    NAMES harfbuzz
-    PATH_SUFFIXES lib
-    HINTS ENV HARFBUZZ_DIR)
+  NAMES
+    harfbuzz
+  PATH_SUFFIXES
+    lib
+  HINTS
+    ENV HARFBUZZ_DIR
+  NO_DEFAULT_PATH
+)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(HarfBuzz DEFAULT_MSG
-    HARFBUZZ_LIBRARY
-    HARFBUZZ_INCLUDE_DIR)
+  HARFBUZZ_LIBRARY
+  HARFBUZZ_INCLUDE_DIR
+)
 
 mark_as_advanced(FORCE
-    HARFBUZZ_LIBRARY
-    HARFBUZZ_INCLUDE_DIR)
+  HARFBUZZ_LIBRARY
+  HARFBUZZ_INCLUDE_DIR
+)
 
 if(NOT TARGET HarfBuzz::HarfBuzz)
-    add_library(HarfBuzz::HarfBuzz UNKNOWN IMPORTED)
-    set_target_properties(HarfBuzz::HarfBuzz PROPERTIES
-        IMPORTED_LOCATION ${HARFBUZZ_LIBRARY}
-        INTERFACE_INCLUDE_DIRECTORIES ${HARFBUZZ_INCLUDE_DIR})
+  add_library(HarfBuzz::HarfBuzz UNKNOWN IMPORTED)
+  set_target_properties(HarfBuzz::HarfBuzz PROPERTIES
+    IMPORTED_LOCATION ${HARFBUZZ_LIBRARY}
+    INTERFACE_INCLUDE_DIRECTORIES ${HARFBUZZ_INCLUDE_DIR}
+  )
 endif()
 
 set(HARFBUZZ_LIBRARIES ${HARFBUZZ_LIBRARY})
