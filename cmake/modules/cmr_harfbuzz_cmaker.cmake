@@ -23,6 +23,7 @@
 
 include(GNUInstallDirs)
 
+include(cmr_lib_cmaker_post)
 include(cmr_print_debug_message)
 include(cmr_print_fatal_error)
 include(cmr_print_message)
@@ -33,6 +34,8 @@ include(cmr_harfbuzz_get_download_params)
 # TODO: make docs
 function(cmr_harfbuzz_cmaker)
   cmake_minimum_required(VERSION 3.2)
+
+  cmr_lib_cmaker_post()
 
   # Required vars
   if(NOT lib_VERSION)
@@ -64,9 +67,6 @@ function(cmr_harfbuzz_cmaker)
     endif()
 
     set(ENV{FREETYPE_DIR} "${FREETYPE_DIR}")
-    if(ANDROID)
-      list(APPEND CMAKE_FIND_ROOT_PATH "${FREETYPE_DIR}")
-    endif()
   endif()
 
 
