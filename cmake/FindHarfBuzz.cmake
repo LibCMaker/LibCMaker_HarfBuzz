@@ -76,7 +76,7 @@ find_path(HARFBUZZ_INCLUDE_DIR
 # Library
 find_library(HARFBUZZ_LIBRARY
   NAMES
-    harfbuzz
+    harfbuzzd harfbuzz
   PATH_SUFFIXES
     lib
   HINTS
