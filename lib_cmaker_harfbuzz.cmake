@@ -102,6 +102,11 @@ function(lib_cmaker_harfbuzz)
   # Library specific build arguments.
   #-----------------------------------------------------------------------
 
+  if(NOT BUILD_SHARED_LIBS_HARFBUZZ
+      AND ANDROID AND BUILD_SHARED_LIBS AND HB_HAVE_FREETYPE)
+    set(BUILD_SHARED_LIBS OFF)
+  endif()
+  
   set(lcm_CMAKE_ARGS)
 
   if(DEFINED LIBCMAKER_FREETYPE_SRC_DIR)
