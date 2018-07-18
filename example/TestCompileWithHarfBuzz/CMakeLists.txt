@@ -25,20 +25,25 @@ cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
 project(LibCMaker_HarfBuzz_Compile_Test CXX)
 
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(cmr_PRINT_DEBUG ON)
 
 
 #-----------------------------------------------------------------------
-# Configure for find_package.
+# Configure to find_package()
 #-----------------------------------------------------------------------
 
-# Set CMake's search path for find_package(), find_program(), find_library(),
-# find_file(), and find_path() commands.
+# Set CMake's search path for find_*() commands.
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
 
 if(ANDROID)
   list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
 endif()
+
+# To use our FindHarfBuzz.cmake.
+list(APPEND CMAKE_MODULE_PATH
+  "${PROJECT_SOURCE_DIR}/cmake/LibCMaker_HarfBuzz/cmake"
+)
 
 
 #-----------------------------------------------------------------------
@@ -46,29 +51,22 @@ endif()
 #-----------------------------------------------------------------------
 
 set(LIBCMAKER_SRC_DIR "${PROJECT_SOURCE_DIR}/cmake/LibCMaker")
-# Uncomment it if need functions from LibCMaker
+# Uncomment it if need functions from LibCMaker.
 #list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
 
 
 #-----------------------------------------------------------------------
-# Set vars for LibCMaker_HarfBuzz.
+# Set vars to LibCMaker_HarfBuzz
 #-----------------------------------------------------------------------
 
 # Standard CMake vars.
 #set(BUILD_SHARED_LIBS ON)
 
-#set(SKIP_INSTALL_HEADERS ON)
-#set(SKIP_INSTALL_LIBRARIES ON)
-#set(SKIP_INSTALL_ALL ON)
-
-# Set useful vars for lib_cmaker_harfbuzz().
-set(cmr_PRINT_DEBUG ON)
-
-set(lib_VERSION "1.6.3")
-
-set(DOWNLOAD_DIR "${PROJECT_BINARY_DIR}")
-set(UNPACKED_SRC_DIR "${PROJECT_BINARY_DIR}")
-set(BUILD_DIR "${PROJECT_BINARY_DIR}/build_harfbuzz")
+# Vars to lib_cmaker_harfbuzz().
+set(HB_lib_VERSION  "1.6.3")
+set(HB_DOWNLOAD_DIR "${PROJECT_BINARY_DIR}")
+set(HB_UNPACKED_DIR "${PROJECT_BINARY_DIR}")
+set(HB_BUILD_DIR    "${PROJECT_BINARY_DIR}/build_harfbuzz")
 
 set(ENV{HARFBUZZ_DIR} "${CMAKE_INSTALL_PREFIX}")
 
@@ -102,35 +100,32 @@ set(ENV{HARFBUZZ_DIR} "${CMAKE_INSTALL_PREFIX}")
 #set(HB_HAVE_INTROSPECTION OFF)
 
 if(HB_HAVE_FREETYPE)
-  # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType
+  # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType.
   set(LIBCMAKER_FREETYPE_SRC_DIR
     "${PROJECT_SOURCE_DIR}/cmake/LibCMaker_FreeType")
-  # To use our FindFreetype.cmake
+  # To use our FindFreetype.cmake.
   list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/")
 endif()
 
 
 #-----------------------------------------------------------------------
-# Build and install the HarfBuzz.
+# Build and install the HarfBuzz
 #-----------------------------------------------------------------------
 
 include(
   ${PROJECT_SOURCE_DIR}/cmake/LibCMaker_HarfBuzz/lib_cmaker_harfbuzz.cmake)
 
-# Make compile, build and install the library at a config CMake phase,
-# generate the CMake config files.
-
-# Install specified library version.
+# Make compile, build and install the library at a config CMake phase.
 lib_cmaker_harfbuzz(
-  VERSION ${lib_VERSION}
-  DOWNLOAD_DIR ${DOWNLOAD_DIR}
-  UNPACKED_SRC_DIR ${UNPACKED_SRC_DIR}
-  BUILD_DIR ${BUILD_DIR}
+  VERSION       ${HB_lib_VERSION}
+  DOWNLOAD_DIR  ${HB_DOWNLOAD_DIR}
+  UNPACKED_DIR  ${HB_UNPACKED_DIR}
+  BUILD_DIR     ${HB_BUILD_DIR}
 )
 
 
 #-----------------------------------------------------------------------
-# find_package
+# find_package()
 #-----------------------------------------------------------------------
 
 # Use newly got library.
@@ -141,10 +136,14 @@ find_package(HarfBuzz REQUIRED)
 # Link to the library
 #-----------------------------------------------------------------------
 
-# Build test executables
+# Build test executables.
+set(lib_SRC_DIR
+  "${HB_UNPACKED_DIR}/harfbuzz-${HB_lib_VERSION}/harfbuzz-${HB_lib_VERSION}"
+)
+
 add_executable(${PROJECT_NAME}
-  ${UNPACKED_SRC_DIR}/harfbuzz-${lib_VERSION}/test/fuzzing/main.cc
-  ${UNPACKED_SRC_DIR}/harfbuzz-${lib_VERSION}/test/fuzzing/hb-fuzzer.cc
+  ${lib_SRC_DIR}/test/fuzzing/main.cc
+  ${lib_SRC_DIR}/test/fuzzing/hb-fuzzer.cc
 )
 target_include_directories(${PROJECT_NAME} PRIVATE ${HARFBUZZ_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} ${HARFBUZZ_LIBRARY})

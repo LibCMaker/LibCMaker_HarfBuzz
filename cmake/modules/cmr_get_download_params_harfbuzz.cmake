@@ -21,34 +21,28 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_fatal_error)
+# Part of "LibCMaker/cmake/modules/cmr_get_download_params.cmake".
 
-function(cmr_harfbuzz_get_download_params
-    version
-    out_url out_sha out_src_dir_name out_tar_file_name)
-
-  set(lib_base_url "https://www.freedesktop.org/software/harfbuzz/release")
-
-  # TODO: get url and sha256 for all HarfBuzz version
   if(version VERSION_EQUAL "1.4.8")
-    set(lib_sha
+    set(arch_file_sha
       "ccec4930ff0bb2d0c40aee203075447954b64a8c2695202413cc5e428c907131")
   endif()
   if(version VERSION_EQUAL "1.6.3")
-    set(lib_sha
+    set(arch_file_sha
       "e31eb367beb61a9399d2c78b51c225ab2b1cbd46f364f2d80d97bb422b44101a")
   endif()
 
-  if(NOT DEFINED lib_sha)
-    cmr_print_fatal_error("Library version ${version} is not supported.")
-  endif()
+  set(base_url "https://www.freedesktop.org/software/harfbuzz/release")
+  set(src_dir_name    "harfbuzz-${version}")
+  set(arch_file_name  "${src_dir_name}.tar.bz2")
+  set(unpack_to_dir   "${unpacked_dir}/${src_dir_name}")
 
-  set(lib_src_name "harfbuzz-${version}")
-  set(lib_tar_file_name "${lib_src_name}.tar.bz2")
-  set(lib_url "${lib_base_url}/${lib_tar_file_name}")
-
-  set(${out_url} "${lib_url}" PARENT_SCOPE)
-  set(${out_sha} "${lib_sha}" PARENT_SCOPE)
-  set(${out_src_dir_name} "${lib_src_name}" PARENT_SCOPE)
-  set(${out_tar_file_name} "${lib_tar_file_name}" PARENT_SCOPE)
-endfunction()
+  set(${out_ARCH_SRC_URL}   "${base_url}/${arch_file_name}" PARENT_SCOPE)
+  set(${out_ARCH_DST_FILE}  "${download_dir}/${arch_file_name}" PARENT_SCOPE)
+  set(${out_ARCH_FILE_SHA}  "${arch_file_sha}" PARENT_SCOPE)
+  set(${out_SHA_ALG}        "SHA256" PARENT_SCOPE)
+  set(${out_UNPACK_TO_DIR}  "${unpack_to_dir}" PARENT_SCOPE)
+  set(${out_UNPACKED_SOURCES_DIR}
+    "${unpack_to_dir}/${src_dir_name}" PARENT_SCOPE
+  )
+  set(${out_VERSION_BUILD_DIR} "${build_dir}/${src_dir_name}" PARENT_SCOPE)
