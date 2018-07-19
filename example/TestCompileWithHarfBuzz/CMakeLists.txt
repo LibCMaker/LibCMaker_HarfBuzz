@@ -147,6 +147,8 @@ add_executable(${PROJECT_NAME}
   ${lib_EXAMPLES_SRC_DIR}/fuzzing/main.cc
   ${lib_EXAMPLES_SRC_DIR}/fuzzing/hb-fuzzer.cc
 )
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
+
+# HarfBuzz
 target_include_directories(${PROJECT_NAME} PRIVATE ${HARFBUZZ_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} ${HARFBUZZ_LIBRARY})
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
