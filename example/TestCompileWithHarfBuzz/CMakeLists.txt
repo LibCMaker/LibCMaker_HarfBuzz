@@ -21,7 +21,7 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.2)
 
 project(LibCMaker_HarfBuzz_Compile_Test CXX)
 
@@ -137,13 +137,15 @@ find_package(HarfBuzz REQUIRED)
 #-----------------------------------------------------------------------
 
 # Build test executables.
-set(lib_SRC_DIR
-  "${HB_UNPACKED_DIR}/harfbuzz-${HB_lib_VERSION}/harfbuzz-${HB_lib_VERSION}"
+
+# Get an example sources from the lib sources.
+set(lib_EXAMPLES_SRC_DIR
+  "${HB_UNPACKED_DIR}/harfbuzz-${HB_lib_VERSION}/harfbuzz-${HB_lib_VERSION}/test"
 )
 
 add_executable(${PROJECT_NAME}
-  ${lib_SRC_DIR}/test/fuzzing/main.cc
-  ${lib_SRC_DIR}/test/fuzzing/hb-fuzzer.cc
+  ${lib_EXAMPLES_SRC_DIR}/fuzzing/main.cc
+  ${lib_EXAMPLES_SRC_DIR}/fuzzing/hb-fuzzer.cc
 )
 target_include_directories(${PROJECT_NAME} PRIVATE ${HARFBUZZ_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} ${HARFBUZZ_LIBRARY})
