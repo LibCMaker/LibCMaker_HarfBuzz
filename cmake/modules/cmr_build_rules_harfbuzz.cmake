@@ -23,15 +23,5 @@
 
 # Part of "LibCMaker/cmake/modules/cmr_build_rules.cmake".
 
-  if(HB_HAVE_FREETYPE)
-    if(NOT FREETYPE_DIR)
-      cmr_print_fatal_error(
-        "Please set FREETYPE_DIR with path to installed FreeType library.")
-    endif()
-
-    set(ENV{FREETYPE_DIR} "${FREETYPE_DIR}")
-  endif()
-
-
   # Configure library.
   add_subdirectory(${lib_SRC_DIR} ${lib_VERSION_BUILD_DIR})

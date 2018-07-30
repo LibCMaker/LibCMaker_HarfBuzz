@@ -68,9 +68,11 @@ find_path(HARFBUZZ_INCLUDE_DIR
     include/harfbuzz
     include
     harfbuzz
-  HINTS
-    ENV HARFBUZZ_DIR
-  NO_DEFAULT_PATH
+#  HINTS
+#    ENV HARFBUZZ_DIR
+  NO_CMAKE_ENVIRONMENT_PATH
+  NO_SYSTEM_ENVIRONMENT_PATH
+  NO_CMAKE_SYSTEM_PATH
 )
 
 # Library
@@ -79,9 +81,11 @@ find_library(HARFBUZZ_LIBRARY
     harfbuzzd harfbuzz
   PATH_SUFFIXES
     lib
-  HINTS
-    ENV HARFBUZZ_DIR
-  NO_DEFAULT_PATH
+#  HINTS
+#    ENV HARFBUZZ_DIR
+  NO_CMAKE_ENVIRONMENT_PATH
+  NO_SYSTEM_ENVIRONMENT_PATH
+  NO_CMAKE_SYSTEM_PATH
 )
 
 include(FindPackageHandleStandardArgs)

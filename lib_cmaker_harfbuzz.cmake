@@ -22,10 +22,10 @@
 # ****************************************************************************
 
 ## +++ Common part of the lib_cmaker_<lib_name> function +++
-set(lib_NAME "HarfBuzz")
+set(cmr_lib_NAME "HarfBuzz")
 
 # To find library's LibCMaker source dir.
-set(lcm_${lib_NAME}_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(lcm_${cmr_lib_NAME}_SRC_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 if(NOT LIBCMAKER_SRC_DIR)
   message(FATAL_ERROR
@@ -75,12 +75,6 @@ function(lib_cmaker_harfbuzz)
     set(BUILD_SHARED_LIBS OFF)
   endif()
   
-  if(DEFINED ENV{FREETYPE_DIR})
-    list(APPEND lcm_CMAKE_ARGS
-      -DFREETYPE_DIR=$ENV{FREETYPE_DIR}
-    )
-  endif()
-
 ## +++ Common part of the lib_cmaker_<lib_name> function +++
   set(cmr_LIB_VARS
     LIBCMAKER_FREETYPE_SRC_DIR
@@ -113,9 +107,9 @@ function(lib_cmaker_harfbuzz)
 
 ## +++ Common part of the lib_cmaker_<lib_name> function +++
   cmr_lib_cmaker_main(
-    NAME          ${lib_NAME}
+    NAME          ${cmr_lib_NAME}
     VERSION       ${arg_VERSION}
-    BASE_DIR      ${lcm_${lib_NAME}_SRC_DIR}
+    BASE_DIR      ${lcm_${cmr_lib_NAME}_SRC_DIR}
     DOWNLOAD_DIR  ${arg_DOWNLOAD_DIR}
     UNPACKED_DIR  ${arg_UNPACKED_DIR}
     BUILD_DIR     ${arg_BUILD_DIR}

@@ -21,7 +21,7 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.3)
 
 project(LibCMaker_HarfBuzz_Compile_Test CXX)
 
@@ -67,8 +67,6 @@ set(HB_lib_VERSION  "1.6.3")
 set(HB_DOWNLOAD_DIR "${PROJECT_BINARY_DIR}")
 set(HB_UNPACKED_DIR "${PROJECT_BINARY_DIR}")
 set(HB_BUILD_DIR    "${PROJECT_BINARY_DIR}/build_harfbuzz")
-
-set(ENV{HARFBUZZ_DIR} "${CMAKE_INSTALL_PREFIX}")
 
 # Library specific vars.
 
