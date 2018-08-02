@@ -23,5 +23,13 @@
 
 # Part of "LibCMaker/cmake/modules/cmr_build_rules.cmake".
 
+  if(NOT LIBCMAKER_FREETYPE_SRC_DIR)
+    cmr_print_fatal_error(
+      "Please set LIBCMAKER_FREETYPE_SRC_DIR with path to LibCMaker_FreeType root.")
+  endif()
+  cmr_print_var_value(LIBCMAKER_FREETYPE_SRC_DIR)
+  # To use our FindFreetype.cmake in HarfBuzz's CMakeLists.txt
+  list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake")
+
   # Configure library.
   add_subdirectory(${lib_SRC_DIR} ${lib_VERSION_BUILD_DIR})
