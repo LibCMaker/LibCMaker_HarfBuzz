@@ -59,10 +59,10 @@ function(lib_cmaker_harfbuzz)
 
   if(HB_HAVE_FREETYPE)
     if(NOT LIBCMAKER_FREETYPE_SRC_DIR)
-      cmr_print_fatal_error(
+      cmr_print_error(
         "Please set LIBCMAKER_FREETYPE_SRC_DIR with path to LibCMaker_FreeType root.")
     endif()
-    cmr_print_var_value(LIBCMAKER_FREETYPE_SRC_DIR)
+    cmr_print_value(LIBCMAKER_FREETYPE_SRC_DIR)
   endif()
 
 
