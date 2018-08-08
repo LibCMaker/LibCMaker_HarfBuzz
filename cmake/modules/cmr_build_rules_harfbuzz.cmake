@@ -23,13 +23,24 @@
 
 # Part of "LibCMaker/cmake/modules/cmr_build_rules.cmake".
 
-  if(NOT LIBCMAKER_FREETYPE_SRC_DIR)
+  if(HB_HAVE_FREETYPE AND NOT LIBCMAKER_FREETYPE_SRC_DIR)
     cmr_print_error(
       "Please set LIBCMAKER_FREETYPE_SRC_DIR with path to LibCMaker_FreeType root.")
   endif()
   cmr_print_value(LIBCMAKER_FREETYPE_SRC_DIR)
   # To use our FindFreetype.cmake in HarfBuzz's CMakeLists.txt
   list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake")
+
+  # Copy CMake build scripts.
+  if(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS)
+    cmr_print_status(
+      "Copy CMake build scripts to unpacked sources.")
+    execute_process(
+      COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${lib_BASE_DIR}/cmake/modules/harfbuzz-${lib_VERSION}
+        ${lib_SRC_DIR}/
+    )
+  endif()
 
   # Configure library.
   add_subdirectory(${lib_SRC_DIR} ${lib_VERSION_BUILD_DIR})

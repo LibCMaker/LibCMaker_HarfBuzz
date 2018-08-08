@@ -63,10 +63,12 @@ set(LIBCMAKER_SRC_DIR "${PROJECT_SOURCE_DIR}/cmake/LibCMaker")
 #set(BUILD_SHARED_LIBS ON)
 
 # Vars to lib_cmaker_harfbuzz().
-set(HB_lib_VERSION  "1.6.3")
+set(HB_lib_VERSION  "1.8.6")
 set(HB_DOWNLOAD_DIR "${PROJECT_BINARY_DIR}")
 set(HB_UNPACKED_DIR "${PROJECT_BINARY_DIR}")
 set(HB_BUILD_DIR    "${PROJECT_BINARY_DIR}/build_harfbuzz")
+
+set(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS ON)
 
 # Library specific vars.
 
@@ -96,6 +98,8 @@ set(HB_BUILD_DIR    "${PROJECT_BINARY_DIR}/build_harfbuzz")
 #set(HB_HAVE_GOBJECT OFF)
 # Enable building introspection (.gir/.typelib) files
 #set(HB_HAVE_INTROSPECTION OFF)
+# Do a configuration suitable for testing (shared library and enable all options
+#set(HB_CHECK OFF)
 
 if(HB_HAVE_FREETYPE)
   # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType.
@@ -143,7 +147,7 @@ set(lib_EXAMPLES_SRC_DIR
 
 add_executable(${PROJECT_NAME}
   ${lib_EXAMPLES_SRC_DIR}/fuzzing/main.cc
-  ${lib_EXAMPLES_SRC_DIR}/fuzzing/hb-fuzzer.cc
+  ${lib_EXAMPLES_SRC_DIR}/fuzzing/hb-shape-fuzzer.cc
 )
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 

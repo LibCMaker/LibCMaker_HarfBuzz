@@ -31,6 +31,10 @@
     set(arch_file_sha
       "e31eb367beb61a9399d2c78b51c225ab2b1cbd46f364f2d80d97bb422b44101a")
   endif()
+  if(version VERSION_EQUAL "1.8.6")
+    set(arch_file_sha
+      "296826f0d6debf2098752e5145c2c40814e187339591d6d7081bd5827eaf5c66")
+  endif()
 
   set(base_url "https://www.freedesktop.org/software/harfbuzz/release")
   set(src_dir_name    "harfbuzz-${version}")

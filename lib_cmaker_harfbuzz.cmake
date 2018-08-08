@@ -77,6 +77,7 @@ function(lib_cmaker_harfbuzz)
   
 ## +++ Common part of the lib_cmaker_<lib_name> function +++
   set(cmr_LIB_VARS
+    COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS
     LIBCMAKER_FREETYPE_SRC_DIR
     HB_HAVE_FREETYPE
     HB_HAVE_GRAPHITE2
@@ -89,6 +90,7 @@ function(lib_cmaker_harfbuzz)
     HB_BUILD_UTILS
     HB_HAVE_GOBJECT
     HB_HAVE_INTROSPECTION
+    HB_CHECK
   )
 
   foreach(d ${cmr_LIB_VARS})
