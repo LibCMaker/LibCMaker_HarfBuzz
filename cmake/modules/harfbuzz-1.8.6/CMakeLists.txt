@@ -817,21 +817,22 @@ if (UNIX AND CMAKE_GENERATOR STREQUAL "Ninja")
   endif ()
 endif ()
 
-
-## src/ executables
-foreach (prog main test test-would-substitute test-size-params test-buffer-serialize hb-ot-tag test-unicode-ranges)
-  set (prog_name ${prog})
-  if (${prog_name} STREQUAL "test")
-    # test can not be used as a valid executable name on cmake, lets special case it
-    set (prog_name test-test)
-  endif ()
-  add_executable(${prog_name} ${PROJECT_SOURCE_DIR}/src/${prog}.cc)
-  target_link_libraries(${prog_name} harfbuzz ${THIRD_PARTY_LIBS})
-endforeach ()
-set_target_properties(hb-ot-tag PROPERTIES COMPILE_FLAGS "-DMAIN")
+if (HB_CHECK)
+  ## src/ executables
+  foreach (prog main test test-would-substitute test-size-params test-buffer-serialize hb-ot-tag test-unicode-ranges)
+    set (prog_name ${prog})
+    if (${prog_name} STREQUAL "test")
+      # test can not be used as a valid executable name on cmake, lets special case it
+      set (prog_name test-test)
+    endif ()
+    add_executable(${prog_name} ${PROJECT_SOURCE_DIR}/src/${prog}.cc)
+    target_link_libraries(${prog_name} harfbuzz ${THIRD_PARTY_LIBS})
+  endforeach ()
+  set_target_properties(hb-ot-tag PROPERTIES COMPILE_FLAGS "-DMAIN")
+endif()
 
 ## Tests
-if (UNIX OR MINGW)
+if (HB_CHECK AND (UNIX OR MINGW))
   if (BUILD_SHARED_LIBS)
     # generate harfbuzz.def after build completion
     add_custom_command(TARGET harfbuzz POST_BUILD
@@ -863,6 +864,8 @@ if (UNIX OR MINGW)
       SKIP_RETURN_CODE 77)
 endif ()
 
-# Needs to come last so that variables defined above are passed to
-# subdirectories.
-add_subdirectory(test)
+if (HB_CHECK)
+  # Needs to come last so that variables defined above are passed to
+  # subdirectories.
+  add_subdirectory(test)
+endif()
