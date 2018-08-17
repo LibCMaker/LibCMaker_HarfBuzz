@@ -40,37 +40,36 @@ if(ANDROID)
   list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
 endif()
 
-# To use our FindHarfBuzz.cmake.
-list(APPEND CMAKE_MODULE_PATH
-  "${PROJECT_SOURCE_DIR}/cmake/LibCMaker_HarfBuzz/cmake"
-)
-
 
 #-----------------------------------------------------------------------
 # Set path to LibCMaker root
 #-----------------------------------------------------------------------
 
-set(LIBCMAKER_SRC_DIR "${PROJECT_SOURCE_DIR}/cmake/LibCMaker")
-# Uncomment it if need functions from LibCMaker.
-#list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
+set(LibCMaker_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake/LibCMaker")
+# Uncomment it if need functions from LibCMaker
+#list(APPEND CMAKE_MODULE_PATH "${LibCMaker_DIR}/cmake")
 
 
 #-----------------------------------------------------------------------
 # Set vars to LibCMaker_HarfBuzz
 #-----------------------------------------------------------------------
 
-# Standard CMake vars.
-#set(BUILD_SHARED_LIBS ON)
-
-# Vars to lib_cmaker_harfbuzz().
+set(HB_lib_NAME     "HarfBuzz")
 set(HB_lib_VERSION  "1.8.6")
-set(HB_DOWNLOAD_DIR "${PROJECT_BINARY_DIR}")
-set(HB_UNPACKED_DIR "${PROJECT_BINARY_DIR}")
-set(HB_BUILD_DIR    "${PROJECT_BINARY_DIR}/build_harfbuzz")
+set(HB_lib_DIR      "${CMAKE_CURRENT_LIST_DIR}/cmake/LibCMaker_HarfBuzz")
+
+# To use below for sample sources.
+set(cmr_UNPACKED_DIR ${CMAKE_CURRENT_BINARY_DIR}/download/unpacked)
+
+# To use our FindHarfBuzz.cmake.
+list(APPEND CMAKE_MODULE_PATH "${HB_lib_DIR}/cmake/modules")
 
 set(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS ON)
 
-# Library specific vars.
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
 
 # Enable freetype interop helpers
 #set(HB_HAVE_FREETYPE OFF)
@@ -104,34 +103,26 @@ set(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS ON)
 if(HB_HAVE_FREETYPE)
   # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType.
   set(LIBCMAKER_FREETYPE_SRC_DIR
-    "${PROJECT_SOURCE_DIR}/cmake/LibCMaker_FreeType")
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/LibCMaker_FreeType"
+  )
   # To use our FindFreetype.cmake.
-  list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/")
+  list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/modules")
 endif()
 
 
 #-----------------------------------------------------------------------
-# Build and install the HarfBuzz
+# Build, install and find the HarfBuzz
 #-----------------------------------------------------------------------
 
-include(
-  ${PROJECT_SOURCE_DIR}/cmake/LibCMaker_HarfBuzz/lib_cmaker_harfbuzz.cmake)
-
-# Make compile, build and install the library at a config CMake phase.
-lib_cmaker_harfbuzz(
-  VERSION       ${HB_lib_VERSION}
-  DOWNLOAD_DIR  ${HB_DOWNLOAD_DIR}
-  UNPACKED_DIR  ${HB_UNPACKED_DIR}
-  BUILD_DIR     ${HB_BUILD_DIR}
+# Make build and install the library at a config CMake phase.
+include(${LibCMaker_DIR}/cmake/cmr_find_package.cmake)
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${HB_lib_NAME}
+  VERSION         ${HB_lib_VERSION}
+  LIB_DIR         ${HB_lib_DIR}
+  REQUIRED
 )
-
-
-#-----------------------------------------------------------------------
-# find_package()
-#-----------------------------------------------------------------------
-
-# Use newly got library.
-find_package(HarfBuzz REQUIRED)
 
 
 #-----------------------------------------------------------------------
@@ -142,7 +133,7 @@ find_package(HarfBuzz REQUIRED)
 
 # Get an example sources from the lib sources.
 set(lib_EXAMPLES_SRC_DIR
-  "${HB_UNPACKED_DIR}/harfbuzz-${HB_lib_VERSION}/harfbuzz-${HB_lib_VERSION}/test"
+  "${cmr_UNPACKED_DIR}/harfbuzz-${HB_lib_VERSION}/harfbuzz-${HB_lib_VERSION}/test"
 )
 
 add_executable(${PROJECT_NAME}
