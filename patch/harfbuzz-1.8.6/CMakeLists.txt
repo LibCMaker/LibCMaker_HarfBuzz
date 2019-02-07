@@ -63,7 +63,7 @@ if (HB_HAVE_INTROSPECTION)
   set (HB_HAVE_GLIB ON)
 endif ()
 
-option(HB_CHECK OFF "Do a configuration suitable for testing (shared library and enable all options)")
+option(HB_CHECK "Do a configuration suitable for testing (shared library and enable all options)" OFF)
 if (HB_CHECK)
   set (BUILD_SHARED_LIBS ON)
   set (HB_BUILD_UTILS ON)

@@ -48,39 +48,37 @@ set(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS ON)
 # Library specific vars and options
 #-----------------------------------------------------------------------
 
-# Enable freetype interop helpers
-#set(HB_HAVE_FREETYPE OFF)
-# Enable Graphite2 complementary shaper
-#set(HB_HAVE_GRAPHITE2 OFF)
-# Use HarfBuzz provided UCDN
-#set(HB_BUILTIN_UCDN ON)
-# Enable glib unicode functions
-#set(HB_HAVE_GLIB OFF)
-# Enable icu unicode functions
-#set(HB_HAVE_ICU OFF)
-#if (APPLE)
-  # Enable CoreText shaper backend on macOS
-  #set(HB_HAVE_CORETEXT ON)
-#endif ()
-#if (WIN32)
-  # Enable Uniscribe shaper backend on Windows
-  #set(HB_HAVE_UNISCRIBE OFF)
-  # Enable DirectWrite shaper backend on Windows
-  #set(HB_HAVE_DIRECTWRITE OFF)
-#endif ()
-# Build harfbuzz utils, needs cairo, freetype, and glib properly be installed
-#set(HB_BUILD_UTILS OFF)
-# Enable GObject Bindings
-#set(HB_HAVE_GOBJECT OFF)
-# Enable building introspection (.gir/.typelib) files
-#set(HB_HAVE_INTROSPECTION OFF)
-# Do a configuration suitable for testing (shared library and enable all options
-#set(HB_CHECK OFF)
+option(HB_HAVE_FREETYPE "Enable freetype interop helpers" OFF)
+option(HB_HAVE_GRAPHITE2 "Enable Graphite2 complementary shaper" OFF)
+option(HB_BUILTIN_UCDN "Use HarfBuzz provided UCDN" ON)
+option(HB_HAVE_GLIB "Enable glib unicode functions" OFF)
+option(HB_HAVE_ICU "Enable icu unicode functions" OFF)
+if(APPLE)
+  option(HB_HAVE_CORETEXT "Enable CoreText shaper backend on macOS" OFF)
+endif ()
+if(WIN32)
+  option(HB_HAVE_UNISCRIBE "Enable Uniscribe shaper backend on Windows" OFF)
+  option(HB_HAVE_DIRECTWRITE "Enable DirectWrite shaper backend on Windows" OFF)
+endif ()
+option(HB_BUILD_UTILS
+  "Build harfbuzz utils, needs cairo, freetype, and glib properly be installed"
+  OFF
+)
+option(HB_HAVE_GOBJECT "Enable GObject Bindings" OFF)
+option(HB_HAVE_INTROSPECTION
+  "Enable building introspection (.gir/.typelib) files"
+  OFF
+)
+option(HB_CHECK
+  "Do a configuration suitable for testing (shared library and enable all options)"
+  OFF
+)
 
-if(HB_HAVE_FREETYPE)
+
+if(NOT cmr_BUILD_FROM_FREETYPE AND HB_HAVE_FREETYPE)
   # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType.
   set(LIBCMAKER_FREETYPE_SRC_DIR
-    "${CMAKE_CURRENT_LIST_DIR}/cmake/LibCMaker_FreeType"
+    "${CMAKE_CURRENT_LIST_DIR}/libs/LibCMaker_FreeType"  # TODO:
   )
   # To use our FindFreetype.cmake.
   list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/modules")
@@ -91,10 +89,20 @@ endif()
 # Build, install and find the library
 #-----------------------------------------------------------------------
 
-cmr_find_package(
-  LibCMaker_DIR   ${LibCMaker_DIR}
-  NAME            ${HB_lib_NAME}
-  VERSION         ${HB_lib_VERSION}
-  LIB_DIR         ${HB_lib_DIR}
-  REQUIRED
-)
+if(cmr_BUILD_FROM_FREETYPE)
+  cmr_find_package(
+    LibCMaker_DIR   ${find_LibCMaker_DIR}
+    NAME            ${HB_lib_NAME}
+    VERSION         ${HB_lib_VERSION}
+    LIB_DIR         ${HB_lib_DIR}
+    REQUIRED
+  )
+else()
+  cmr_find_package(
+    LibCMaker_DIR   ${LibCMaker_DIR}
+    NAME            ${HB_lib_NAME}
+    VERSION         ${HB_lib_VERSION}
+    LIB_DIR         ${HB_lib_DIR}
+    REQUIRED
+  )
+endif()
