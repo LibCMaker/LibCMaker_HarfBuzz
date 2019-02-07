@@ -21,84 +21,80 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-cmake_minimum_required(VERSION 3.4)
+#-----------------------------------------------------------------------
+# The file is an example of the convenient script for the library build.
+#-----------------------------------------------------------------------
 
-project(LibCMaker_HarfBuzz_Compile_Test CXX)
+#-----------------------------------------------------------------------
+# Lib's name, version, paths
+#-----------------------------------------------------------------------
 
-option(CMAKE_VERBOSE_MAKEFILE "CMAKE_VERBOSE_MAKEFILE" OFF)
-option(cmr_PRINT_DEBUG "cmr_PRINT_DEBUG" OFF)
+set(HB_lib_NAME     "HarfBuzz")
+set(HB_lib_VERSION  "1.8.6")
+set(HB_lib_DIR      "${CMAKE_CURRENT_LIST_DIR}")
+
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${HB_lib_DIR}/cmake/modules")
 
 
 #-----------------------------------------------------------------------
-# Configure to find_package()
+# LibCMaker_<LibName> specific vars and options
 #-----------------------------------------------------------------------
 
-# Set CMake's search path for find_*() commands.
-list(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
+set(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS ON)
 
-if(ANDROID)
-  list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
+
+# Enable freetype interop helpers
+#set(HB_HAVE_FREETYPE OFF)
+# Enable Graphite2 complementary shaper
+#set(HB_HAVE_GRAPHITE2 OFF)
+# Use HarfBuzz provided UCDN
+#set(HB_BUILTIN_UCDN ON)
+# Enable glib unicode functions
+#set(HB_HAVE_GLIB OFF)
+# Enable icu unicode functions
+#set(HB_HAVE_ICU OFF)
+#if (APPLE)
+  # Enable CoreText shaper backend on macOS
+  #set(HB_HAVE_CORETEXT ON)
+#endif ()
+#if (WIN32)
+  # Enable Uniscribe shaper backend on Windows
+  #set(HB_HAVE_UNISCRIBE OFF)
+  # Enable DirectWrite shaper backend on Windows
+  #set(HB_HAVE_DIRECTWRITE OFF)
+#endif ()
+# Build harfbuzz utils, needs cairo, freetype, and glib properly be installed
+#set(HB_BUILD_UTILS OFF)
+# Enable GObject Bindings
+#set(HB_HAVE_GOBJECT OFF)
+# Enable building introspection (.gir/.typelib) files
+#set(HB_HAVE_INTROSPECTION OFF)
+# Do a configuration suitable for testing (shared library and enable all options
+#set(HB_CHECK OFF)
+
+if(HB_HAVE_FREETYPE)
+  # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType.
+  set(LIBCMAKER_FREETYPE_SRC_DIR
+    "${CMAKE_CURRENT_LIST_DIR}/cmake/LibCMaker_FreeType"
+  )
+  # To use our FindFreetype.cmake.
+  list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/modules")
 endif()
 
 
 #-----------------------------------------------------------------------
-# Set path vars
+# Build, install and find the library
 #-----------------------------------------------------------------------
 
-set(LibCMaker_LIB_DIR "${CMAKE_CURRENT_LIST_DIR}/libs")
-set(cmr_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
-
-if(NOT cmr_UNPACKED_DIR)
-  set(cmr_UNPACKED_DIR "${PROJECT_BINARY_DIR}/download/unpacked")
-endif()
-
-
-#-----------------------------------------------------------------------
-# LibCMaker settings
-#-----------------------------------------------------------------------
-
-set(LibCMaker_DIR "${LibCMaker_LIB_DIR}/LibCMaker")
-list(APPEND CMAKE_MODULE_PATH "${LibCMaker_DIR}/cmake")
-include(cmr_find_package)
-
-
-#-----------------------------------------------------------------------
-# Download, configure, build, install and find the required libraries
-#-----------------------------------------------------------------------
-
-option(BUILD_TESTING "Build the testing tree." OFF)
-if(BUILD_TESTING)
-  enable_testing()
-  include(${LibCMaker_LIB_DIR}/LibCMaker_GoogleTest/cmr_build_googletest.cmake)
-endif()
-
-include(${LibCMaker_LIB_DIR}/LibCMaker_HarfBuzz/cmr_build_harfbuzz.cmake)
-
-
-#-----------------------------------------------------------------------
-# Build the executable of the example
-#-----------------------------------------------------------------------
-
-set(example_src_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
-
-add_executable(${PROJECT_NAME}
-  ${example_src_DIR}/example.cpp
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${HB_lib_NAME}
+  VERSION         ${HB_lib_VERSION}
+  LIB_DIR         ${HB_lib_DIR}
+  REQUIRED
 )
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
-
-
-#-----------------------------------------------------------------------
-# Link to the libraries
-#-----------------------------------------------------------------------
-
-# HarfBuzz
-target_include_directories(${PROJECT_NAME} PRIVATE ${HARFBUZZ_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${HARFBUZZ_LIBRARY})
-
-
-#-----------------------------------------------------------------------
-# Testing
-#-----------------------------------------------------------------------
-
-set(test_src_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
-add_subdirectory(test)
