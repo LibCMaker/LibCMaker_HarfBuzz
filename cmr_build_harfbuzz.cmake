@@ -29,9 +29,9 @@
 # Lib's name, version, paths
 #-----------------------------------------------------------------------
 
-set(HB_lib_NAME     "HarfBuzz")
-set(HB_lib_VERSION  "1.8.6")
-set(HB_lib_DIR      "${CMAKE_CURRENT_LIST_DIR}")
+set(HB_lib_NAME "HarfBuzz")
+set(HB_lib_VERSION "1.8.6" CACHE STRING "HB_lib_VERSION")
+set(HB_lib_DIR "${CMAKE_CURRENT_LIST_DIR}" CACHE PATH "HB_lib_DIR")
 
 # To use our Find<LibName>.cmake.
 list(APPEND CMAKE_MODULE_PATH "${HB_lib_DIR}/cmake/modules")
@@ -41,7 +41,7 @@ list(APPEND CMAKE_MODULE_PATH "${HB_lib_DIR}/cmake/modules")
 # LibCMaker_<LibName> specific vars and options
 #-----------------------------------------------------------------------
 
-set(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS ON)
+option(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS "COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS" ON)
 
 
 #-----------------------------------------------------------------------
@@ -79,6 +79,7 @@ if(NOT cmr_BUILD_FROM_FREETYPE AND HB_HAVE_FREETYPE)
   # Needed for lib_cmaker_harfbuzz() to build HarfBuzz with FreeType.
   set(LIBCMAKER_FREETYPE_SRC_DIR
     "${CMAKE_CURRENT_LIST_DIR}/libs/LibCMaker_FreeType"  # TODO:
+    CACHE PATH "LIBCMAKER_FREETYPE_SRC_DIR"
   )
   # To use our FindFreetype.cmake.
   list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/modules")
