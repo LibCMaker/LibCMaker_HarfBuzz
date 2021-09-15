@@ -23,6 +23,9 @@
 
 # Part of "LibCMaker/cmake/cmr_get_download_params.cmake".
 
+  include(cmr_get_version_parts)
+  cmr_get_version_parts(${version} major minor patch tweak)
+
   if(version VERSION_EQUAL "1.4.8")
     set(arch_file_sha
       "ccec4930ff0bb2d0c40aee203075447954b64a8c2695202413cc5e428c907131")
@@ -35,13 +38,17 @@
     set(arch_file_sha
       "296826f0d6debf2098752e5145c2c40814e187339591d6d7081bd5827eaf5c66")
   endif()
+  if(version VERSION_EQUAL "2.9.1")
+    set(arch_file_sha
+      "0edcc980f526a338452180e701d6aba6323aef457b6686976a7d17ccbddc51cf")
+  endif()
 
-  set(base_url "https://www.freedesktop.org/software/harfbuzz/release")
+  set(base_url "https://github.com/harfbuzz/harfbuzz/releases/download")
   set(src_dir_name    "harfbuzz-${version}")
-  set(arch_file_name  "${src_dir_name}.tar.bz2")
+  set(arch_file_name  "${src_dir_name}.tar.xz")
   set(unpack_to_dir   "${unpacked_dir}/${src_dir_name}")
 
-  set(${out_ARCH_SRC_URL}   "${base_url}/${arch_file_name}" PARENT_SCOPE)
+  set(${out_ARCH_SRC_URL}   "${base_url}/${major}.${minor}.${patch}/${arch_file_name}" PARENT_SCOPE)
   set(${out_ARCH_DST_FILE}  "${download_dir}/${arch_file_name}" PARENT_SCOPE)
   set(${out_ARCH_FILE_SHA}  "${arch_file_sha}" PARENT_SCOPE)
   set(${out_SHA_ALG}        "SHA256" PARENT_SCOPE)

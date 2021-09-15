@@ -40,7 +40,7 @@
       AND ANDROID AND BUILD_SHARED_LIBS AND HB_HAVE_FREETYPE)
     set(BUILD_SHARED_LIBS OFF)
   endif()
-  
+
 ## +++ Common part of the lib_cmaker_<lib_name> function +++
   set(find_LIB_VARS
     COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS
@@ -52,8 +52,10 @@
     HB_HAVE_ICU
     HB_HAVE_CORETEXT
     HB_HAVE_UNISCRIBE
+    HB_HAVE_GDI
     HB_HAVE_DIRECTWRITE
     HB_BUILD_UTILS
+    HB_BUILD_SUBSET
     HB_HAVE_GOBJECT
     HB_HAVE_INTROSPECTION
     HB_CHECK
@@ -67,8 +69,8 @@
     endif()
   endforeach()
 ## --- Common part of the lib_cmaker_<lib_name> function ---
-  
-  
+
+
   #-----------------------------------------------------------------------
   # Building
   #-----------------------------------------------------------------------

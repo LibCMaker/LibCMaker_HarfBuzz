@@ -30,7 +30,7 @@
 #-----------------------------------------------------------------------
 
 set(HB_lib_NAME "HarfBuzz")
-set(HB_lib_VERSION "1.8.6" CACHE STRING "HB_lib_VERSION")
+set(HB_lib_VERSION "2.9.1" CACHE STRING "HB_lib_VERSION")
 set(HB_lib_DIR "${CMAKE_CURRENT_LIST_DIR}" CACHE PATH "HB_lib_DIR")
 
 # To use our Find<LibName>.cmake.
@@ -50,7 +50,6 @@ option(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS "COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS" ON)
 
 option(HB_HAVE_FREETYPE "Enable freetype interop helpers" OFF)
 option(HB_HAVE_GRAPHITE2 "Enable Graphite2 complementary shaper" OFF)
-option(HB_BUILTIN_UCDN "Use HarfBuzz provided UCDN" ON)
 option(HB_HAVE_GLIB "Enable glib unicode functions" OFF)
 option(HB_HAVE_ICU "Enable icu unicode functions" OFF)
 if(APPLE)
@@ -58,19 +57,17 @@ if(APPLE)
 endif ()
 if(WIN32)
   option(HB_HAVE_UNISCRIBE "Enable Uniscribe shaper backend on Windows" OFF)
+  option(HB_HAVE_GDI "Enable GDI integration helpers on Windows" OFF)
   option(HB_HAVE_DIRECTWRITE "Enable DirectWrite shaper backend on Windows" OFF)
 endif ()
 option(HB_BUILD_UTILS
   "Build harfbuzz utils, needs cairo, freetype, and glib properly be installed"
   OFF
 )
+option(HB_BUILD_SUBSET "Build harfbuzz-subset" ON)
 option(HB_HAVE_GOBJECT "Enable GObject Bindings" OFF)
 option(HB_HAVE_INTROSPECTION
   "Enable building introspection (.gir/.typelib) files"
-  OFF
-)
-option(HB_CHECK
-  "Do a configuration suitable for testing (shared library and enable all options)"
   OFF
 )
 
