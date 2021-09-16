@@ -99,7 +99,7 @@ mark_as_advanced(FORCE
   HARFBUZZ_INCLUDE_DIR
 )
 
-if(NOT TARGET HarfBuzz::HarfBuzz)
+if(HarfBuzz_FOUND AND NOT TARGET HarfBuzz::HarfBuzz)
   add_library(HarfBuzz::HarfBuzz UNKNOWN IMPORTED)
   set_target_properties(HarfBuzz::HarfBuzz PROPERTIES
     IMPORTED_LOCATION ${HARFBUZZ_LIBRARY}
