@@ -105,6 +105,19 @@ if(NOT TARGET HarfBuzz::HarfBuzz)
     IMPORTED_LOCATION ${HARFBUZZ_LIBRARY}
     INTERFACE_INCLUDE_DIRECTORIES ${HARFBUZZ_INCLUDE_DIR}
   )
+
+  if(NOT BUILD_SHARED_LIBS)
+    if(NOT MSVC)
+      set(THREADS_PREFER_PTHREAD_FLAG ON)
+      find_package(Threads)
+      if(CMAKE_USE_PTHREADS_INIT)
+        list(APPEND THIRD_PARTY_LIBS Threads::Threads)
+        set_property(TARGET HarfBuzz::HarfBuzz APPEND PROPERTY
+          INTERFACE_LINK_LIBRARIES Threads::Threads
+        )
+      endif()
+    endif()
+  endif()
 endif()
 
 set(HARFBUZZ_LIBRARIES ${HARFBUZZ_LIBRARY})
