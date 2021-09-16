@@ -65,8 +65,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 #-----------------------------------------------------------------------
 
 # HarfBuzz
-target_include_directories(${PROJECT_NAME} PRIVATE ${HARFBUZZ_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${HARFBUZZ_LIBRARY})
+target_link_libraries(${PROJECT_NAME} PRIVATE HarfBuzz::HarfBuzz)
 
 
 #-----------------------------------------------------------------------

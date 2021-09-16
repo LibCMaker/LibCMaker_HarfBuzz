@@ -35,8 +35,7 @@ if(BUILD_TESTING)
   )
 
   # HarfBuzz
-  target_include_directories(${test_NAME} PRIVATE ${HARFBUZZ_INCLUDE_DIR})
-  target_link_libraries(${test_NAME} PRIVATE ${HARFBUZZ_LIBRARY})
+  target_link_libraries(${test_NAME} PRIVATE HarfBuzz::HarfBuzz)
 
   cmr_common_sample_test_2nd_part()
 endif()
