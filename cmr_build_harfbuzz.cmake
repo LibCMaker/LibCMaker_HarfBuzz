@@ -30,7 +30,7 @@
 #-----------------------------------------------------------------------
 
 set(HB_lib_NAME "HarfBuzz")
-set(HB_lib_VERSION "2.9.1" CACHE STRING "HB_lib_VERSION")
+set(HB_lib_VERSION "3.0.0" CACHE STRING "HB_lib_VERSION")
 set(HB_lib_DIR "${CMAKE_CURRENT_LIST_DIR}" CACHE PATH "HB_lib_DIR")
 
 # To use our Find<LibName>.cmake.

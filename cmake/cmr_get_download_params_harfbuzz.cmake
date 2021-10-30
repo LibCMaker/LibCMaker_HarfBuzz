@@ -42,6 +42,10 @@
     set(arch_file_sha
       "0edcc980f526a338452180e701d6aba6323aef457b6686976a7d17ccbddc51cf")
   endif()
+  if(version VERSION_EQUAL "3.0.0")
+    set(arch_file_sha
+      "036b0ee118451539783ec7864148bb4106be42a2eb964df4e83e6703ec46f3d9")
+  endif()
 
   set(base_url "https://github.com/harfbuzz/harfbuzz/releases/download")
   set(src_dir_name    "harfbuzz-${version}")
