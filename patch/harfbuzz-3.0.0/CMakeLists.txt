@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(harfbuzz)
 
-message(WARN "HarfBuzz has a Meson port and tries to migrate all the other build systems to it, please consider using it as we might remove our cmake port soon.")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ## Limit framework build to Xcode generator
 if (BUILD_FRAMEWORK)
@@ -466,15 +467,7 @@ if (UNIX OR MINGW)
     # No threadsafe statics as we do it ourselves
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-threadsafe-statics")
   endif ()
-
-  CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-  if (COMPILER_SUPPORTS_CXX11)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-  else()
-    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-  endif()
 endif ()
-
 
 ## Define harfbuzz-gobject library
 if (HB_HAVE_GOBJECT)
