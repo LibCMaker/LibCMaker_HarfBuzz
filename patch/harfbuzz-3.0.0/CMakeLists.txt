@@ -4,6 +4,10 @@ project(harfbuzz)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(BUILD_FOR_WINXP OR CMAKE_GENERATOR_TOOLSET MATCHES "v141_xp")
+  add_definitions(-DHB_BUILD_FOR_WINXP)
+endif()
+
 ## Limit framework build to Xcode generator
 if (BUILD_FRAMEWORK)
   # for a framework build on macOS, use:

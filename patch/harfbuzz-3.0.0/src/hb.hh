@@ -204,7 +204,9 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#if !defined(HB_BUILD_FOR_WINXP)
 #include <winapifamily.h>
+#endif
 #endif
 
 #define HB_PASTE1(a,b) a##b
